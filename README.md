@@ -1,9 +1,7 @@
 # LoRA-SAM3: Anonymous GitHub Repository
 
-[![License: MIT](https://img.shields.io/badge/License-MIT-green.svg?style=flat-square)](https://opensource.org/licenses/MIT)
-
 > **Anonymous Submission**<br>
-> Paper ID: [Insert Your Paper ID Here]
+> Paper ID: 1306
 
 This is the official PyTorch implementation for our submission: **LoRA-SAM3**. We propose a highly efficient and effective framework that adapts the frozen Segment Anything Model 3 (SAM3) using Low-Rank Adaptation (LoRA), an Attention Gated (AttGate) decoder, and a pixel-level learnable alpha map. 
 
@@ -41,9 +39,6 @@ Our model ($r=8$ AttGate) sets new SOTA benchmarks. Below is a subset of our res
 
 ---
 
+TODO
 ## 🛠️ Installation
 
-**1. Clone the repository:**
-```bash
-git clone [Anonymous URL provided by submission portal / Anonymous GitHub]
-cd LoRA-SAM3
