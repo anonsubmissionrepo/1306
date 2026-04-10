@@ -25,7 +25,7 @@ Our method achieves **State-of-the-Art (SOTA)** performance across 11 datasets s
 
 ## 📊 Quantitative Results
 
-Our model ($r=8$ AttGate) sets new SOTA benchmarks. Below is a subset of our results on Camouflaged Object Detection (COD) datasets.
+Our model, LoRA-SAM3, sets new SOTA benchmarks. Below is a subset of our results on Camouflaged Object Detection (COD) datasets.
 
 | Methods | CAMO ($S_m\uparrow$) | COD10K ($S_m\uparrow$) | CHAMELEON ($S_m\uparrow$) | NC4K ($S_m\uparrow$) |
 |:---|:---:|:---:|:---:|:---:|
