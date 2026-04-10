@@ -3,9 +3,9 @@
 > **Anonymous Submission**<br>
 > Paper ID: 1306
 
-This is the official PyTorch implementation for our submission: **LoRA-SAM3**. We propose a highly efficient and effective framework that adapts the frozen Segment Anything Model 3 (SAM3) using Low-Rank Adaptation (LoRA), an Attention Gated (AttGate) decoder, and a pixel-level learnable alpha map. 
+This is the official PyTorch implementation for our submission: **LoRA-SAM3**. We propose a highly efficient and effective framework that adapts the frozen Segment Anything Model 3 (SAM3) using Low-Rank Adaptation (LoRA) and a lightweight Attention Gated (AttGate) decoder.
 
-Our method achieves **State-of-the-Art (SOTA)** performance across 11 datasets spanning Salient Object Detection (SOD), Camouflaged Object Detection (COD), and Mirror/Glass Object Detection (MAS).
+Our method achieves **State-of-the-Art (SOTA)** performance across 11 datasets spanning Salient Object Detection (SOD), Camouflaged Object Detection (COD), and Marine Animal Segmentation (MAS).
 
 <p align="center">
   <img src="LoRA-SAM3.png" alt="Overall Architecture of LoRA-SAM3" width="95%">
@@ -18,7 +18,6 @@ Our method achieves **State-of-the-Art (SOTA)** performance across 11 datasets s
 ## 🚀 Key Features
 
 * **Parameter Efficient:** Achieves SOTA results by training only ~6.4M parameters while keeping the heavy SAM3 encoder completely frozen.
-* **Pixel-Level LoRA:** Utilizes a pixel-level learnable alpha map (`PixLora`) rather than a static alpha scalar for finer-grained spatial adaptation.
 * **Attention Gated Decoder:** Replaces the standard U-Net decoder with an `AttGate` decoder to better fuse multi-scale features, yielding higher $S_m$ scores without significantly increasing GMACs or latency.
 * **Universal Application:** Consistently outperforms recent specialized models on SOD, COD, and MAS tasks.
 
