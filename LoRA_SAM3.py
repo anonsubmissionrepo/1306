@@ -3,48 +3,9 @@ import torch.nn as nn
 import torch.nn.functional as F
 from peft import LoraConfig
 from peft.tuners.lora import Linear as LoraLinear
-import math
 
 # -------------------------------------------------
-# Helper Functions
-# -------------------------------------------------
-# class PixelAdaptiveLoraLinear(nn.Module):
-#     """
-#     Wraps a PEFT LoraLinear layer to add a learnable, spatially-adaptive alpha map.
-#     Handles both 3D (B, N, C) and 4D (B, H, W, C) inputs robustly.
-#     """
-#     def __init__(self, lora_layer: LoraLinear, grid_size=32):
-#         super().__init__()
-#         self.lora_layer = lora_layer
-#         self.spatial_alpha = nn.Parameter(torch.ones(1, 1, grid_size, grid_size))
-
-#     def forward(self, x):
-#         B, H, W, C = x.shape
-
-#         result_base = self.lora_layer.base_layer(x)
-        
-#         adapter = self.lora_layer.active_adapter[0] if isinstance(self.lora_layer.active_adapter, list) else self.lora_layer.active_adapter
-#         lora_A = self.lora_layer.lora_A[adapter]
-#         lora_B = self.lora_layer.lora_B[adapter]
-#         dropout = self.lora_layer.lora_dropout[adapter]
-#         scaling = self.lora_layer.scaling[adapter]
-        
-#         x_drop = dropout(x)
-#         delta = (x_drop @ lora_A.weight.T) @ lora_B.weight.T
-        
-#         current_alpha_map = F.interpolate(
-#             self.spatial_alpha, 
-#             size=(H, W), 
-#             mode='bilinear', 
-#             align_corners=False
-#         ) 
-
-#         alpha_broadcast = current_alpha_map.permute(0, 2, 3, 1) 
-#         return result_base + (delta * scaling * alpha_broadcast)
-
-
-# -------------------------------------------------
-# 2. Updated Injection Function
+# LoRA Injection Function
 # -------------------------------------------------
 def apply_pixel_lora_to_backbone(encoder, lora_config, min_rank=4):
     """
@@ -145,16 +106,6 @@ class AttentionUp(nn.Module):
         x_skip_clean = self.attn_gate(g=x_up, x=x_skip)
         return self.conv(torch.cat([x_skip_clean, x_up], dim=1))
     
-class Up(nn.Module):
-    def __init__(self, in_channels, out_channels, skip_channels):
-        super().__init__()
-        self.up = nn.Upsample(scale_factor=2, mode="bilinear", align_corners=False)
-        self.conv = DoubleConv(in_channels + skip_channels, out_channels)
-
-    def forward(self, x_decoder, x_skip):
-        x_up = self.up(x_decoder)
-        return self.conv(torch.cat([x_skip, x_up], dim=1))
-
 # -------------------------------------------------
 # Main Model
 # -------------------------------------------------
@@ -181,9 +132,6 @@ class LoRA_SAM3(nn.Module):
         self.bottleneck_conv = DoubleConv(512, 256) 
         self.up1 = AttentionUp(in_channels=256, out_channels=256, skip_channels=256)
         self.up2 = AttentionUp(in_channels=256, out_channels=256, skip_channels=256)
-
-        # self.up1 = Up(in_channels=256, out_channels=256, skip_channels=256)
-        # self.up2 = Up(in_channels=256, out_channels=256, skip_channels=256)
 
         self.head_aux = nn.Conv2d(256, 1, 1)
         self.head_main = nn.Conv2d(256, 1, 1)
